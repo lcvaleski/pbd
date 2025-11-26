@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temp files
+*.tmp
+*.swp
+*~

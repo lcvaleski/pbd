@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .loading-item {
+            margin: 30px 0;
+            display: none;
+            align-items: center;
+        }
+
+        .loading-item.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d3d3d3;
+            border-top: 2px solid #808080;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .complete .spinner {
+            display: none;
+        }
+
+        .complete .loading-text::before {
+            content: "✓ ";
+            color: #808080;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-item" id="blog-loader">
+        <div class="spinner"></div>
+        <div class="loading-text">Creating blog...</div>
+    </div>
+
+    <div class="loading-item" id="gallery-loader">
+        <div class="spinner"></div>
+        <div class="loading-text">Creating gallery...</div>
+    </div>
+
+    <script>
+        // Start animations
+        setTimeout(() => {
+            const blogLoader = document.getElementById('blog-loader');
+            blogLoader.classList.add('active');
+
+            // Complete blog after 2 seconds
+            setTimeout(() => {
+                blogLoader.classList.add('complete');
+
+                // Start gallery loading
+                const galleryLoader = document.getElementById('gallery-loader');
+                galleryLoader.classList.add('active');
+
+                // Complete gallery after 2 seconds
+                setTimeout(() => {
+                    galleryLoader.classList.add('complete');
+
+                    // Redirect to user.html
+                    setTimeout(() => {
+                        window.location.href = 'user.html';
+                    }, 500);
+                }, 2000);
+            }, 2000);
+        }, 500);
+    </script>
+</body>
+</html>
