@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .content-wrapper {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        #blogTitle {
+            font-size: 24px;
+            font-weight: normal;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .posts {
+            list-style: none;
+        }
+
+        .post {
+            margin-bottom: 8px;
+        }
+
+        .post a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .post a:hover {
+            text-decoration: underline;
+        }
+
+        .post a:visited {
+            color: #606060;
+        }
+
+        .pin-icon {
+            color: #922121;
+            font-size: 14px;
+            margin-right: 4px;
+        }
+
+        .new-tag {
+            color: #922121;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .image-post {
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .image-post.visible {
+            display: block;
+        }
+
+        .post-image {
+            width: 200px;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .post-caption {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .post-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .placeholder-text {
+            color: #999;
+            font-size: 14px;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                font-size: 15px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="header">
+            <h1 id="blogTitle">My Blog</h1>
+        </div>
+
+        <ul class="posts">
+            <li class="post">
+                <a href="#" onclick="return false;">
+                    <span class="pin-icon">📌</span>About
+                </a>
+            </li>
+        </ul>
+
+        <div class="image-post" id="imagePost">
+            <img id="postImage" class="post-image" src="" alt="Blog post">
+            <div id="postCaption" class="post-caption"></div>
+            <div class="post-date" id="postDate"></div>
+        </div>
+
+        <div class="placeholder-text" id="placeholder">
+            Upload an image to see your first post
+        </div>
+
+        <ul class="posts">
+            <li class="post">
+                <a href="#" onclick="return false;">
+                    Notes on product design
+                </a>
+            </li>
+            <li class="post">
+                <a href="#" onclick="return false;">
+                    Why I left FAANG
+                </a>
+            </li>
+            <li class="post">
+                <a href="#" onclick="return false;">
+                    How I built this
+                </a>
+            </li>
+            <li class="post">
+                <a href="#" onclick="return false;">
+                    Keep it simple
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Get today's date
+        function getToday() {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date().toLocaleDateString(undefined, options);
+        }
+
+        // Listen for messages from parent frame
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'UPDATE_BLOG_NAME') {
+                const blogTitle = document.getElementById('blogTitle');
+                blogTitle.textContent = event.data.blogName || 'My Blog';
+            }
+
+            if (event.data.type === 'UPDATE_IMAGE') {
+                const imagePost = document.getElementById('imagePost');
+                const postImage = document.getElementById('postImage');
+                const placeholder = document.getElementById('placeholder');
+                const postDate = document.getElementById('postDate');
+
+                postImage.src = event.data.imageUrl;
+                imagePost.classList.add('visible');
+                placeholder.style.display = 'none';
+                postDate.textContent = getToday();
+            }
+
+            if (event.data.type === 'UPDATE_CAPTION') {
+                const postCaption = document.getElementById('postCaption');
+                postCaption.textContent = event.data.caption || '';
+            }
+        });
+    </script>
+</body>
+</html>
