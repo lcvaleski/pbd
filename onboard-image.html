@@ -47,6 +47,38 @@
             border-radius: 8px;
             padding: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            display: none;
+        }
+
+        .blog-preview-container.visible {
+            display: block;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 15px 25px;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-overlay.hidden {
+            display: none;
+        }
+
+        .lock-icon {
+            font-size: 16px;
         }
 
         .browser-bar {
@@ -90,6 +122,14 @@
             background: white;
             display: block;
             border-radius: 0 0 6px 6px;
+            filter: blur(8px);
+            opacity: 0.5;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        .blog-preview-iframe.unlocked {
+            filter: blur(0);
+            opacity: 1;
         }
 
         .form-group {
@@ -334,6 +374,10 @@
                         class="blog-preview-iframe"
                         id="previewFrame"
                     ></iframe>
+                    <div class="preview-overlay" id="previewOverlay">
+                        <span class="lock-icon">🔒</span>
+                        <span>Upload an image to preview your blog</span>
+                    </div>
                 </div>
 
                 <div class="bottom-section">
@@ -447,6 +491,11 @@
                     type: 'UPDATE_IMAGE',
                     imageUrl: uploadedImageUrl
                 }, '*');
+
+                // Show and unlock preview
+                document.querySelector('.blog-preview-container').classList.add('visible');
+                iframe.classList.add('unlocked');
+                document.getElementById('previewOverlay').classList.add('hidden');
             };
             reader.readAsDataURL(file);
         }
