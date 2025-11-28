@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        #blogTitle {
+            font-size: 24px;
+            font-weight: normal;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .posts {
+            list-style: none;
+        }
+
+        .post {
+            margin-bottom: 8px;
+        }
+
+        .post a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .post a:hover {
+            text-decoration: underline;
+        }
+
+        .post a:visited {
+            color: #606060;
+        }
+
+        .pin-icon {
+            color: #922121;
+            font-size: 14px;
+            margin-right: 4px;
+        }
+
+        .new-tag {
+            color: #922121;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .all-posts-header {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            user-select: none;
+            color: #000;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .all-posts-header:hover {
+            text-decoration: underline;
+        }
+
+        .expand-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .expand-arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .all-posts-list {
+            display: none;
+        }
+
+        .all-posts-list.expanded {
+            display: block;
+        }
+
+
+        @media (max-width: 640px) {
+            body {
+                font-size: 15px;
+                padding: 30px 20px;
+            }
+
+            .header-img {
+                width: 250px;
+                height: 80px;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="blogTitle">My Blog</h1>
+    </div>
+
+    <ul class="posts">
+        <li class="post">
+            <a href="#" onclick="return false;">
+                <span class="pin-icon">📌</span>Welcome to My Blog!
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                My First Post<span class="new-tag">[new]</span>
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Thoughts on Writing
+            </a>
+        </li>
+    </ul>
+
+    <div class="all-posts-header" onclick="toggleAllPosts()">
+        <span class="expand-arrow" id="expandArrow">▶</span>
+        <span>All Posts (5)</span>
+    </div>
+    <ul class="posts all-posts-list" id="allPostsList">
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Morning Coffee Reflections
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Weekend Adventures
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Book Review: The Art of Simple Living
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Recipe: Grandma's Apple Pie
+            </a>
+        </li>
+        <li class="post">
+            <a href="#" onclick="return false;">
+                Summer Travel Plans
+            </a>
+        </li>
+    </ul>
+
+
+    <script>
+        function toggleAllPosts() {
+            const list = document.getElementById('allPostsList');
+            const arrow = document.getElementById('expandArrow');
+
+            list.classList.toggle('expanded');
+            arrow.classList.toggle('expanded');
+        }
+
+        // Listen for messages from parent frame
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'UPDATE_BLOG_NAME') {
+                const blogTitle = document.getElementById('blogTitle');
+                blogTitle.textContent = event.data.blogName || 'My Blog';
+            }
+        });
+    </script>
+</body>
+</html>

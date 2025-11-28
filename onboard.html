@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-side {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            background: #fff;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .form-container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .blog-preview-container {
+            margin: 30px 0;
+            height: 400px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .blog-preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: Georgia, 'Times New Roman', serif;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6d98bb;
+        }
+
+        .subdomain-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subdomain-input {
+            flex: 1;
+        }
+
+        .subdomain-suffix {
+            color: #666;
+            font-size: 14px;
+            white-space: nowrap;
+            font-style: italic;
+        }
+
+        .availability-message {
+            font-size: 12px;
+            margin-top: 6px;
+            height: 16px;
+            font-style: italic;
+        }
+
+        .available {
+            color: #6d98bb;
+        }
+
+        .taken {
+            color: #d9534f;
+        }
+
+        .suggestions {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .divider {
+            margin: 20px 0;
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+            position: relative;
+            font-style: italic;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider span {
+            background: #fff;
+            padding: 0 15px;
+            position: relative;
+        }
+
+        .create-button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #6d98bb;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 13px;
+            font-family: Georgia, 'Times New Roman', serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-button:hover {
+            background-color: #5a82a3;
+        }
+
+        .create-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+
+        @media (max-width: 768px) {
+            .form-side {
+                padding: 30px 20px;
+            }
+
+            .blog-preview-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="form-container">
+                <div class="top-section">
+                    <div class="form-group">
+                        <div class="subdomain-input-group">
+                            <input
+                                type="text"
+                                id="blogName"
+                                class="subdomain-input"
+                                placeholder="myblog"
+                                oninput="updateBoth()"
+                            >
+                            <span class="subdomain-suffix">.blogplatform.com</span>
+                        </div>
+                        <div id="availability" class="availability-message"></div>
+                        <div id="suggestions" class="suggestions"></div>
+                    </div>
+                </div>
+
+                <div class="blog-preview-container">
+                    <iframe
+                        src="preview.html"
+                        class="blog-preview-iframe"
+                        id="previewFrame"
+                    ></iframe>
+                </div>
+
+                <div class="bottom-section">
+                    <div class="divider">
+                        <span>Account Details</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="••••••••">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="••••••••">
+                    </div>
+
+                    <button class="create-button" onclick="createBlog()">
+                        Create My Blog →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-side" style="display: none;">
+            <div class="preview-url" id="previewUrl">myblog.blogplatform.com</div>
+        </div>
+    </div>
+
+    <script>
+        // Dummy list of taken subdomains
+        const takenSubdomains = ['blog', 'admin', 'api', 'www', 'test', 'demo', 'coffee', 'tech'];
+
+        function updateBoth() {
+            const input = document.getElementById('blogName').value;
+            const subdomain = input.toLowerCase().replace(/[^a-z0-9-]/g, '') || 'myblog';
+            const blogName = input || 'My Blog';
+            const availabilityDiv = document.getElementById('availability');
+            const suggestionsDiv = document.getElementById('suggestions');
+            const iframe = document.getElementById('previewFrame');
+
+            // Send message to preview iframe with formatted blog name
+            iframe.contentWindow.postMessage({
+                type: 'UPDATE_BLOG_NAME',
+                blogName: blogName.charAt(0).toUpperCase() + blogName.slice(1)
+            }, '*');
+
+            if (!input) {
+                availabilityDiv.innerHTML = '';
+                suggestionsDiv.innerHTML = '';
+                return;
+            }
+
+            // Check if subdomain is taken (dummy check)
+            if (takenSubdomains.includes(subdomain)) {
+                availabilityDiv.innerHTML = '<span class="taken">✗ This address is taken</span>';
+
+                // Generate suggestions
+                const suggestions = [
+                    subdomain + '123',
+                    subdomain + 'blog',
+                    'my' + subdomain,
+                    subdomain + new Date().getFullYear()
+                ];
+
+                suggestionsDiv.innerHTML = `Try: ${suggestions.join(', ')}`;
+            } else if (subdomain.length < 3) {
+                availabilityDiv.innerHTML = '<span class="taken">✗ Must be at least 3 characters</span>';
+                suggestionsDiv.innerHTML = '';
+            } else {
+                availabilityDiv.innerHTML = '<span class="available">✓ Available!</span>';
+                suggestionsDiv.innerHTML = '';
+            }
+        }
+
+        function createBlog() {
+            // In a real app, this would submit the form
+            // For now, just show an alert
+            const input = document.getElementById('blogName').value;
+            const subdomain = input.toLowerCase().replace(/[^a-z0-9-]/g, '');
+            const blogName = input.charAt(0).toUpperCase() + input.slice(1);
+
+            if (!input) {
+                alert('Please enter a blog name');
+                return;
+            }
+
+            alert(`🎉 Blog created!\n\nYour blog "${blogName}" would be live at:\n${subdomain}.blogplatform.com\n\n(This is just a demo - no actual blog was created)`);
+        }
+
+        // Initialize preview on load
+        window.addEventListener('load', () => {
+            updateBoth();
+        });
+    </script>
+</body>
+</html>
