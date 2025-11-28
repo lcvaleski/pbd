@@ -3,22 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pale Blue Dot</title>
+    <title>River</title>
     <style>
         body {
             font-family: Georgia, 'Times New Roman', serif;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
             background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
         }
 
+        .main-wrapper {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        .main-content {
+            max-width: 600px;
+            flex-shrink: 0;
+        }
+
         h1 {
             font-size: 24px;
             font-weight: normal;
-            text-align: center;
+            text-align: left;
             margin-bottom: 30px;
             color: #2c3e50;
         }
@@ -31,13 +42,6 @@
             font-size: 14px;
         }
 
-        .pale-blue-dot {
-            display: block;
-            margin: 0 auto 40px;
-            max-width: 300px;
-            height: auto;
-            border: 1px solid #ddd;
-        }
 
         .content {
             text-align: left;
@@ -53,7 +57,7 @@
         .cta-button {
             display: inline-block;
             padding: 12px 24px;
-            background-color: #4a5568;
+            background-color: #6d98bb;
             color: #fff;
             text-decoration: none;
             border-radius: 3px;
@@ -63,7 +67,7 @@
         }
 
         .cta-button:hover {
-            background-color: #2d3748;
+            background-color: #5a82a3;
         }
 
         .quote {
@@ -81,51 +85,101 @@
         }
 
         .footer {
-            text-align: center;
+            text-align: left;
             font-size: 12px;
             color: #999;
             margin-top: 60px;
         }
+
+        .blog-preview-container {
+            width: 300px;
+            height: 700px;
+            opacity: 0.5;
+            overflow: hidden;
+            border-radius: 8px;
+            flex-shrink: 0;
+            margin-top: 40px;
+        }
+
+        .blog-preview-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .blog-preview-iframe {
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            border: none;
+            animation: scrollAnimation 20s linear infinite;
+        }
+
+        @keyframes scrollAnimation {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: linear-gradient(
+                to bottom,
+                #f9f9f9 0%,
+                transparent 15%,
+                transparent 85%,
+                #f9f9f9 100%
+            );
+        }
+
+        @media (max-width: 1200px) {
+            .blog-preview-container {
+                display: none;
+            }
+            .main-wrapper {
+                max-width: 600px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Pale Blue Dot</h1>
+    <div class="main-wrapper">
+        <div class="main-content">
+            <h1>River</h1>
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Pale_Blue_Dot.png"
-         alt="Pale Blue Dot - Earth from Voyager 1"
-         class="pale-blue-dot">
+            <div class="content">
+                <p>Being online didn't used to feel so chaotic.</p>
 
-    <div class="content">
-        <p>The modern day internet has made the world feel so small by force feeding us information we don't want all the time.</p>
+                <p>And it shouldn't have to.</p>
 
-        <p>Let's make the universe feel big and mysterious again by making your own world feel more tangible.</p>
+                <p>River lets you share the things that matter to you in one simple space.</p>
 
-        <p><strong>We should feel close to the things we want to feel close to.</strong></p>
+                <p>Your own personal corner of the internet, without the noise.</p>
 
-        <hr>
+                <div>
+                    <a href="universe.html" class="cta-button">Claim yours</a>
+                </div>
+            </div>
 
-        <div class="friends-directory" style="text-align: left;">
-            <p style="font-weight: 600; margin-bottom: 10px;">Friends Directory:</p>
-            <div style="margin-left: 20px; line-height: 1.4;">
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">Griffin's Corner</a></p>
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">logancv pics</a></p>
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">sushinycnobs</a></p>
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">Meridian Archives</a></p>
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">boxcar collective</a></p>
-                <p style="margin: 5px 0;"><a href="#" style="color: #666; text-decoration: underline;">signal & noise</a></p>
-                <p style="margin: 5px 0; color: #999;">...</p>
+            <div class="footer">
+                <p>Est. 2025</p>
             </div>
         </div>
 
-        <hr>
-
-        <div style="text-align: center;">
-            <a href="universe.html" class="cta-button">Open your pocket of the universe</a>
+        <div class="blog-preview-container">
+            <div class="blog-preview-wrapper">
+                <iframe src="https://logan.valeski.org/pages/pics.html" class="blog-preview-iframe"></iframe>
+                <div class="gradient-overlay"></div>
+            </div>
         </div>
-    </div>
-
-    <div class="footer">
-        <p>Est. 2025</p>
     </div>
 </body>
 </html>
